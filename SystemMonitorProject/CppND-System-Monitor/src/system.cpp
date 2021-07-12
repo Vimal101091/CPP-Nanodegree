@@ -13,22 +13,16 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-//Defining constructor for system class
-/*System::System() : pids_(LinuxParser::Pids()){
-
-for(auto pid : pids_){
-      processes_.push_back((Process)pid);  
-    }
-}*/
-
-
-// TODO: Return the system's CPU
+//Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-// TODO: Return a container composed of the system's processes
+//Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
-  for(auto pid: LinuxParser::Pids()){
-    processes_.push_back(Process{pid});
+  processes_.clear();
+  std::vector<int> pids{LinuxParser::Pids()};
+  for(auto pid: pids){
+    Process process(pid);
+    processes_.push_back(process);
   } 
   std::sort(std::begin(processes_), std::end(processes_));
   return processes_; }

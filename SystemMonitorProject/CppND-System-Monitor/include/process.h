@@ -11,15 +11,13 @@ class Process {
  public:
   //Constructor instantiation for Process class
   Process(int);
-  //Move constructor
-  //Process(Process&&);
   int Pid();                               // TODO: See src/process.cpp
   std::string User();                      // TODO: See src/process.cpp
   std::string Command();                   // TODO: See src/process.cpp
   float CpuUtilization();                  // TODO: See src/process.cpp
   std::string Ram();                       // TODO: See src/process.cpp
   long int UpTime();                       // TODO: See src/process.cpp
-  bool operator<(Process const& a) const;  // TODO: See src/process.cpp
+  bool operator<(Process& a);  // TODO: See src/process.cpp
 
   //Declare any necessary private members
  private:
@@ -29,6 +27,7 @@ class Process {
   std::string RamInfo_;
   std::string command_;
   long uptime_;
+  float CpuUtilization_;
 };
 
 #endif
