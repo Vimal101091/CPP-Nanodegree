@@ -3,42 +3,41 @@
 //Constrcutor of Process Class
 Processor::Processor(){
     std::vector<std::string> CpuData = LinuxParser::CpuUtilization();
-    user_   = std::stol(CpuData[0], nullptr, 10);
-    nice_   = std::stol(CpuData[1], nullptr, 10);
-    system_ = std::stol(CpuData[2], nullptr, 10);
-    idle_   = std::stol(CpuData[3], nullptr, 10);
-    ioWait_ = std::stol(CpuData[4], nullptr, 10);
-    irq_    = std::stol(CpuData[5], nullptr, 10);
-    softIrq_= std::stol(CpuData[6], nullptr, 10);
-    steal_  = std::stol(CpuData[7], nullptr, 10);
+    user_   = std::stof(CpuData[0]);
+    nice_   = std::stof(CpuData[1]);
+    system_ = std::stof(CpuData[2]);
+    idle_   = std::stof(CpuData[3]);
+    ioWait_ = std::stof(CpuData[4]);
+    irq_    = std::stof(CpuData[5]);
+    softIrq_= std::stof(CpuData[6]);
+    steal_  = std::stof(CpuData[7]);
 }
   
 //Return the aggregate CPU utilization
 float Processor::Utilization() { 
     //Read various CPU parameters
     std::vector<std::string> CpuData = LinuxParser::CpuUtilization();
-    long user    = std::stol(CpuData[0]);
-    long nice    = std::stol(CpuData[1]);
-    long system  = std::stol(CpuData[2]);
-    long idle    = std::stol(CpuData[3]);
-    long ioWait  = std::stol(CpuData[4]);
-    long irq     = std::stol(CpuData[5]);
-    long softIrq = std::stol(CpuData[6]);
-    long steal   = std::stol(CpuData[7]);
+    float user    = std::stof(CpuData[0]);
+    float nice    = std::stof(CpuData[1]);
+    float system  = std::stof(CpuData[2]);
+    float idle    = std::stof(CpuData[3]);
+    float ioWait  = std::stof(CpuData[4]);
+    float irq     = std::stof(CpuData[5]);
+    float softIrq = std::stof(CpuData[6]);
+    float steal   = std::stof(CpuData[7]);
  
-    long Idle    = idle + ioWait;
-    long NonIdle = user + nice + system + irq + softIrq + steal; 
-    long Total   = Idle + NonIdle; 
+    float Idle    = idle + ioWait;
+    float NonIdle = user + nice + system + irq + softIrq + steal; 
+    float Total   = Idle + NonIdle;
+    float prevIdle    = idle_ + ioWait_;
+    float prevNonIdle = user_ + nice_ + system_ + irq_ + softIrq_ + steal_; 
+    float prevTotal   = prevIdle + prevNonIdle; 
 
-    long prevIdle    = idle_ + ioWait_;
-    long prevNonIdle = user_ + nice_ + system_ + irq_ + softIrq_ + steal_; 
-    long prevTotal   = prevIdle + prevNonIdle; 
-
-    long totald  = Total - prevTotal;
-    long idled   = Idle - prevIdle;
+    float totald  = Total - prevTotal;
+    float idled   = Idle - prevIdle;
     
     if(totald > 0){
-         cpu_utilization_ = (float)(totald - idled)/totald;  //CPU Utilization calculation     
+         cpu_utilization_ = (totald - idled)/totald;  //CPU Utilization calculation     
     }
     //Update the most recent CPU parameter values
     user_   = user;

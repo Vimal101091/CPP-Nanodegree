@@ -13,14 +13,14 @@ class Processor {
   
   //Declare any necessary private members
  private:
- long user_ = 0;
- long nice_ = 0;
- long system_ = 0;
- long idle_ = 0;
- long ioWait_ = 0;
- long irq_ = 0;
- long softIrq_ = 0;
- long steal_ = 0;
+ float user_ = 0;
+ float nice_ = 0;
+ float system_ = 0;
+ float idle_ = 0;
+ float ioWait_ = 0;
+ float irq_ = 0;
+ float softIrq_ = 0;
+ float steal_ = 0;
  float cpu_utilization_ = 0.0;
 };
 

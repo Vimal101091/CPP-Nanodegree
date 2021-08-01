@@ -16,7 +16,7 @@ Process :: Process(int pid) : pid_(pid),
   username_(LinuxParser::User(pid_)),
   RamInfo_ (LinuxParser::Ram(pid_)),
   command_ (LinuxParser::Command(pid_)),
-  uptime_ (LinuxParser::UpTime()),
+  uptime_ (LinuxParser::UpTime(pid_)),
   CpuUtilization_(this->CpuUtilization()){}
   
 //Return this process's ID
@@ -26,16 +26,15 @@ int Process::Pid() { return pid_; }
 float Process::CpuUtilization() { 
   //Extract the processes' CPU parameters
   std::vector<std::string> ParamCpu = LinuxParser::CpuUtilization(pid_);
-  long utime      =  std::stol(ParamCpu[0]);
-  long stime      =  std::stol(ParamCpu[1]);
-  long cutime     =  std::stol(ParamCpu[2]);
-  long cstime     =  std::stol(ParamCpu[3]);
-  long starttime  =  std::stol(ParamCpu[4]);
-  long totaltime  =  utime + stime + cutime + cstime;
-  uptime_ = 0;
-  uptime_ = LinuxParser::UpTime();
-  long seconds    =  uptime_ - (starttime / sysconf(_SC_CLK_TCK));
-  CpuUtilization_ =  (float)100*(totaltime/sysconf(_SC_CLK_TCK))/seconds; //Calculation of process CPU utilization
+  float utime      =  std::stoi(ParamCpu[0]);
+  float stime      =  std::stoi(ParamCpu[1]);
+  float cutime     =  std::stoi(ParamCpu[2]);
+  float cstime     =  std::stoi(ParamCpu[3]);
+  float starttime  =  std::stoi(ParamCpu[4]);
+  float totaltime  =  utime + stime + cutime + cstime;
+  float  uptime  = LinuxParser::UpTime();
+  float seconds    =  uptime - (starttime / sysconf(_SC_CLK_TCK));
+  CpuUtilization_ =   100*(totaltime/sysconf(_SC_CLK_TCK))/seconds; //Calculation of process CPU utilization
   return CpuUtilization_; }
 
 //Return the command that generated this process
@@ -52,7 +51,7 @@ string Process::Ram() {
 string Process::User() { return username_; }
 
 //Return the age of this process (in seconds)
-long int Process::UpTime() { return uptime_; }
+long int Process::UpTime() { return LinuxParser::UpTime(pid_); }
 
 //Overload the "less than" comparison operator for Process objects
 bool Process::operator<(Process& a){ 
