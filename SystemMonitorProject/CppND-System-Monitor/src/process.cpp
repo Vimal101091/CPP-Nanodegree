@@ -34,7 +34,7 @@ float Process::CpuUtilization() {
   float totaltime  =  utime + stime + cutime + cstime;
   float  uptime  = LinuxParser::UpTime();
   float seconds    =  uptime - (starttime / sysconf(_SC_CLK_TCK));
-  CpuUtilization_ =   100*(totaltime/sysconf(_SC_CLK_TCK))/seconds; //Calculation of process CPU utilization
+  CpuUtilization_ =   (totaltime/sysconf(_SC_CLK_TCK))/seconds; //Calculation of process CPU utilization
   return CpuUtilization_; }
 
 //Return the command that generated this process
@@ -55,5 +55,5 @@ long int Process::UpTime() { return LinuxParser::UpTime(pid_); }
 
 //Overload the "less than" comparison operator for Process objects
 bool Process::operator<(Process& a){ 
-  return (this->CpuUtilization_ < a.CpuUtilization_);
+  return (this->CpuUtilization_ > a.CpuUtilization_);
    }
