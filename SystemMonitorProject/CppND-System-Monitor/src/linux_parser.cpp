@@ -100,7 +100,7 @@ long LinuxParser::UpTime() {
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
-    linestream >>data1 >> uptime;
+    linestream >> uptime >> data1;
   }
   return (long)uptime;
  }
